@@ -2,7 +2,9 @@
     <?php include_once __DIR__ . '/../templates/nombre-sitio.php'?>
     <div class="contenedor-sm">
         <p class="descripcion-pagina">Crea tu cuenta en UpTask</p>
-        <form class="formularios" action="/">
+
+        <?php include_once __DIR__ . '/../templates/alertas.php'?>
+        <form class="formularios" action="/crear" method="POST">
         <div class="campo">
                 <label for="nombre">Nombre:</label>
                 <input 
@@ -10,21 +12,23 @@
                     id="nombre"
                     name="nombre"
                     placeholder="Tu Nombre"
+                    value="<?php echo $usuario->nombre; ?>"
                 >
             </div>
             <div class="campo">
                 <label for="email">Email:</label>
                 <input 
-                    type="text"
+                    type="email"
                     id="email"
                     name="email"
                     placeholder="Tu Email"
+                    value="<?php echo $usuario->email; ?>"
                 >
             </div>
             <div class="campo">
                 <label for="password">Password:</label>
                 <input 
-                    type="text"
+                    type="password"
                     id="password"
                     name="password"
                     placeholder="Tu Password"
@@ -33,7 +37,7 @@
             <div class="campo">
                 <label for="password2">Confirma tu Password:</label>
                 <input 
-                    type="text"
+                    type="password"
                     id="password2"
                     name="password2"
                     placeholder="Confirma tu Password"
