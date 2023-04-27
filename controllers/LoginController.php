@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Model\Usuario;
 use MVC\Router;
+use Classes\Email;
 
 class LoginController {
 
@@ -42,7 +43,23 @@ class LoginController {
                     Usuario::setAlerta('error','El usuario ya está registrado');
                     $alertas = Usuario::getAlertas();
                 } else {
+                    //Hashear el password
+                    $usuario->hashPassword();
+
+                    //Eliminar el password2
+                    unset($usuario->password2);
+
+                    //Crear el token
+                    $usuario->crearToken();
+
                     //registrar el usuario
+                    $resultado = $usuario->guardar();
+
+                    if($resultado) {
+                        $email = new Email($usuario->email,$usuario->nombre,$usuario->token);
+                        $email->enviarConfirmacion();
+                        header('Location: /mensaje');
+                    }
                 }
 
             }
