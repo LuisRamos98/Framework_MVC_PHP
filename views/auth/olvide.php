@@ -2,6 +2,7 @@
     <?php include_once __DIR__ . '/../templates/nombre-sitio.php';?>
     <div class="contenedor-sm">
         <p class="descripcion-pagina">Recupera tu acceso a UpTask</p>
+        <?php include_once __DIR__ . '/../templates/alertas.php';?>
         <form action="/olvide" method='POST' class="formularios">
             <div class="campo">
                 <label for="email">Email:</label>
