@@ -93,7 +93,6 @@ class LoginController {
                     //Actualizar el usuario
                     $usuario->crearToken();
                     unset($usuario->password2);
-                    $usuario->confirmado = 0;
                     $usuario->guardar();
 
                     //Enviar mail
@@ -124,13 +123,41 @@ class LoginController {
         $titulo = 'Restablecer Password';
         $alertas = [];
         $token = s($_GET['token']);   
+        $mostrar = true;
 
         if(!$token) {header('Location: /');}
 
         $usuario = Usuario::where('token',$token);
-        debuguear($usuario);
+
+        if(empty($usuario)) {
+            Usuario::setAlerta('error','El token no existe');
+            $mostrar = false;
+        }
         
         if($_SERVER["REQUEST_METHOD"] === 'POST') {
+
+            $usuario->sincronizar($_POST);
+
+            // debuguear($usuario);
+
+            $alertas = $usuario->validarPassword(); 
+
+            if(empty($alertas)) {
+                //Hashear el nuevo password
+                $usuario->password = $_POST['password'];
+                $usuario->hashPassword();
+
+                //Eliminar el Token
+                $usuario->token = null;
+                unset($usuario->password2);
+                
+                //Guardamos en la base de datos
+                $resultado = $usuario->guardar();
+
+                if($resultado) {
+                    header("Location: /");
+                }
+            }
 
         }
 
@@ -138,7 +165,9 @@ class LoginController {
         
         //Muestra la vista
         $router->render('auth/restablecer',[
-            "titulo" => $titulo
+            "titulo" => $titulo,
+            "alertas" => $alertas,
+            "mostrar" => $mostrar
         ]);
     }
 
