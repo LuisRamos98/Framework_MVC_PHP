@@ -2,7 +2,8 @@
     <?php include_once __DIR__ . '/../templates/nombre-sitio.php'?>
     <div class="contenedor-sm">
         <p class="descripcion-pagina">Inciar Sesión</p>
-        <form class="formularios" action="/">
+        <?php include_once __DIR__ . '/../templates/alertas.php'?>
+        <form class="formularios" action="/" method='POST'>
             <div class="campo">
                 <label for="email">Email:</label>
                 <input 
@@ -15,7 +16,7 @@
             <div class="campo">
                 <label for="password">Password:</label>
                 <input 
-                    type="text"
+                    type="password"
                     id="password"
                     name="password"
                     placeholder="Tu Password"
