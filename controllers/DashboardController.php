@@ -12,9 +12,12 @@ class DashboardController {
         session_start();
         isAuth();
 
+        $proyectos = Proyecto::belongsTo('propietarioId',$_SESSION['id']);
+
         //MOSTRAR LA VISTA
         $router->render('dashboard/index',[
-            'titulo' => 'Proyectos'
+            'titulo' => 'Proyectos',
+            'proyectos' => $proyectos
         ]);
     }
 
@@ -75,9 +78,12 @@ class DashboardController {
         session_start();
         isAuth();
 
+        $alertas = [];
+
         //MOSTRAR LA VISTA
         $router->render('dashboard/crear-proyecto',[
-            'titulo' => 'Perfil'
+            'titulo' => 'Perfil',
+            'alertas' => $alertas
         ]);
     }
 }
