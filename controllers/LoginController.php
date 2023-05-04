@@ -54,7 +54,9 @@ class LoginController {
     }
 
     public static function logout() {
-        echo "DESDE LOGOUT";
+        session_start();
+        $_SESSION = [];
+        header('Location: /');
 
     }
 
