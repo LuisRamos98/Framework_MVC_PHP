@@ -81,7 +81,7 @@ class DashboardController {
         $alertas = [];
 
         //MOSTRAR LA VISTA
-        $router->render('dashboard/crear-proyecto',[
+        $router->render('dashboard/perfil',[
             'titulo' => 'Perfil',
             'alertas' => $alertas
         ]);
