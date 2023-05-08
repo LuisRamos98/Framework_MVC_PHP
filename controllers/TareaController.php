@@ -60,14 +60,43 @@ class TareaController {
                 'tipo' => 'exito',
                 'id' => $resultado['id'],
                 'mensaje' => 'Tarea Agregada Correctamente',
+                'proyectoId' => $tarea->proyectoId
             ];
             echo json_encode($respuesta);
         }
     }
 
     public static function actualizar() {
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            $proyecto = Proyecto::where('url',$_POST['proyectoId']);
+            
+            session_start();
+            
+            if(!$proyecto || $proyecto->propietarioId !== $_SESSION['id']) {
+                $respuesta = [
+                    'tipo' => 'error',
+                    'mensaje' => 'Hubo un error al agregar la tarea'
+                ];
+                echo json_encode($respuesta);
+                return;
+            }
+
+            $tarea = new Tarea($_POST);
+            $tarea->proyectoId = $proyecto->id;
+            $resultado = $tarea->guardar();
+            
+            if($resultado) {
+                $respuesta = [
+                    'id' => $tarea->id,
+                    'tipo' => 'exito',
+                    'mensaje' => 'Actualizado Correctamente',
+                    'proyectoId' => $tarea->proyectoId
+                ];
+
+                echo json_encode($respuesta);
+            }
         }
     }
 
