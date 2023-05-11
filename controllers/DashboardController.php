@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Model\Proyecto;
+use Model\Usuario;
 use MVC\Router;
 
 class DashboardController {
@@ -79,10 +80,40 @@ class DashboardController {
         isAuth();
 
         $alertas = [];
+        $usuario = Usuario::find($_SESSION['id']);
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+           $usuario->sincronizar($_POST);
+            
+           $alertas = $usuario->validarPerfil();
+
+           if(empty($alertas)) {
+
+                $existeUsuario = Usuario::where('email', $usuario->email);
+
+                if($existeUsuario && $existeUsuario!== $usuario->id) {
+                    Usuario::setAlerta('error','El correo ya existe, prueba uno nuevo');
+                    $alertas = $usuario->getAlertas();
+                } else {
+                    //Actualizamos el usuario
+                    $resultado = $usuario->guardar();
+
+                    $_SESSION['nombre'] = $usuario->nombre;
+
+                    if($resultado) {
+                    Usuario::setAlerta('exito','Guardado Exitosamente');
+                    $alertas = $usuario->getAlertas();
+                    }
+
+                }
+                
+           }
+        }
 
         //MOSTRAR LA VISTA
         $router->render('dashboard/perfil',[
             'titulo' => 'Perfil',
+            'usuario' => $usuario,
             'alertas' => $alertas
         ]);
     }
