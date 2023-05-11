@@ -91,7 +91,7 @@ class DashboardController {
 
                 $existeUsuario = Usuario::where('email', $usuario->email);
 
-                if($existeUsuario && $existeUsuario!== $usuario->id) {
+                if($existeUsuario && $existeUsuario->id !== $usuario->id) {
                     Usuario::setAlerta('error','El correo ya existe, prueba uno nuevo');
                     $alertas = $usuario->getAlertas();
                 } else {

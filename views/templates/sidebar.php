@@ -1,7 +1,7 @@
 <aside class="sidebar">
 
     <div class="contenedor-menu">
-        <h2>UpTask</h2>
+        <a href="/dashboard"><h2>UpTask</h2></a>
         <div class="cerrar-menu">
         <img id="cerrar-menu" src="/build/img/cerrar.svg" alt="imagen cerrar-menu">
     </div>
