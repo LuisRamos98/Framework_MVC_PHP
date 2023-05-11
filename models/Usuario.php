@@ -14,6 +14,8 @@ class Usuario extends ActiveRecord {
     public $email;
     public $password;
     public $password2;
+    public $passwordActual;
+    public $passwordNueva;
     public $token;
     public $confirmado;
 
@@ -24,6 +26,8 @@ class Usuario extends ActiveRecord {
         $this->email = $args['email'] ?? '';
         $this->password = $args['password'] ?? '';
         $this->password2 = $args['password2'] ?? '';
+        $this->passwordActual = $args['passwordActual'] ?? '';
+        $this->passwordNueva = $args['passwordNueva'] ?? '';
         $this->token = $args['token'] ?? '';
         $this->confirmado = $args['confirmado'] ?? 0;
     }
@@ -96,7 +100,6 @@ class Usuario extends ActiveRecord {
     }
 
     //VALIDAR QUE LOS CAMPOS DEL FORMULARIO DE PERFIL NO ESTÉN VACIO
-
     public function validarPerfil() {
         if(!$this->nombre) {
             self::$alertas['error'][] = 'El nombre es obligatorio';
@@ -107,6 +110,26 @@ class Usuario extends ActiveRecord {
         }
 
         return self::$alertas;
+    }
+
+    //VALIDA QUE LOS CAMPOS DE DE PASSACTUAL Y PASSNUEVA NO ESTÉN VACÍO
+    public function validarCambiarPassword() {
+        if(!$this->passwordActual) {
+            self::$alertas['error'][] = 'El password actual es obligatorio';
+        }
+        if(!$this->passwordNueva) {
+            self::$alertas['error'][] = 'El password nuevo es obligatorio';
+        }
+        if(strlen($this->passwordNueva) < 6) {
+            self::$alertas['error'][] = 'El password debe contener mínimo 6 carácteres';
+        }
+
+        return self::$alertas;
+    }
+
+    //Verifica que el passwordActual sea el mismo que password
+    public function comprobarPassword() {
+        return password_verify($this->passwordActual, $this->password);
     }
 
     //HASHEA EL PASSWORD

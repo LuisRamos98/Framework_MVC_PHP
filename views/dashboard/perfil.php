@@ -1,8 +1,11 @@
 <?php include_once __DIR__ . '/header-dashboard.php'; ?>
 
 <div class="contenedor-sm">
+    
     <?php include_once __DIR__ . '/../templates/alertas.php'?>
-    <form method="POST" class="formularios">
+    
+    <a href="/cambiar-password" class="enlace">Cambiar Password</a>
+    <form method="POST" class="formularios" action="/perfil">
         <div class="campo">
             <label for="nombre">Nombre</label>
             <input 
